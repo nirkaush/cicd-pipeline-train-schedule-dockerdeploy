@@ -8,6 +8,19 @@ node {
         version = '18.15.0'
 }
 
+file('installNode.js').text = '''
+const { execSync } = require('child_process');
+const nodeVersion = require('node-version');
+const desiredVersion = 'latest'; // Specify 'latest' to install the latest version
+const installedVersion = nodeVersion();
+if (installedVersion !== desiredVersion) {
+    console.log('Node.js version:', installedVersion);
+    console.log('Desired version:', desiredVersion);
+    execSync('npm install -g n');
+    execSync('n ' + desiredVersion);
+}
+'''
+
 // Add a custom task to clean npm cache
 task cleanNpmCache(type: NodeTask) {
     script = file('cleanNpmCache.js')
@@ -44,3 +57,19 @@ npm_build.dependsOn npm_test
 npm_test.dependsOn npmInstall
 npm_build.dependsOn npmInstall
 npmInstall.dependsOn cleanNpmCache
+
+// Add task to fix vulnerabilities
+task npmAuditFix(type: NpmTask) {
+    args = ['audit', 'fix']
+}
+
+// Add task to show funding details
+task npmFund(type: NpmTask) {
+    args = ['fund']
+}
+
+// Declare task dependencies for npm vulnerabilities and funding
+npmInstall.dependsOn npmAuditFix
+npmInstall.dependsOn npmFund
+
+
