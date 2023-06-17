@@ -16,6 +16,7 @@ task cleanNpmCache(type: NodeTask) {
 file('cleanNpmCache.js').text = '''
 const { execSync } = require('child_process');
 execSync('npm cache clean --force');
+'''
 
 //declare a build task
 task build
