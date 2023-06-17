@@ -5,6 +5,7 @@ plugins {
 
 node {
         download = true
+        version = '18.15.0'
 }
 
 // Add a custom task to clean npm cache
