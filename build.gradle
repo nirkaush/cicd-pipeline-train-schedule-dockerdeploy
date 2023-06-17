@@ -7,6 +7,16 @@ node {
         download = true
 }
 
+// Add a custom task to clean npm cache
+task cleanNpmCache(type: NodeTask) {
+    script = file('cleanNpmCache.js')
+}
+
+// Create a JavaScript file for cleaning npm cache
+file('cleanNpmCache.js').text = '''
+const { execSync } = require('child_process');
+execSync('npm cache clean --force');
+
 //declare a build task
 task build
 
@@ -31,3 +41,4 @@ zip.dependsOn npm_build
 npm_build.dependsOn npm_test
 npm_test.dependsOn npmInstall
 npm_build.dependsOn npmInstall
+npmInstall.dependsOn cleanNpmCache
