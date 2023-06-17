@@ -58,18 +58,4 @@ npm_test.dependsOn npmInstall
 npm_build.dependsOn npmInstall
 npmInstall.dependsOn cleanNpmCache
 
-// Add task to fix vulnerabilities
-task npmAuditFix(type: NpmTask) {
-    args = ['audit', 'fix']
-}
-
-// Add task to show funding details
-task npmFund(type: NpmTask) {
-    args = ['fund']
-}
-
-// Declare task dependencies for npm vulnerabilities and funding
-npmInstall.dependsOn npmAuditFix
-npmInstall.dependsOn npmFund
-
 
