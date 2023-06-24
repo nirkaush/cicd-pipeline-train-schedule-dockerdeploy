@@ -13,12 +13,7 @@ pipeline {
                 branch 'master'
             }
             steps {
-                script {
-                    def app = docker.build("nirajkaushik/train-schedule")
-                    app.inside {
-                        sh 'echo $(curl localhost:3000)'
-                    }
-                }
+                    sh 'docker build -t nirajkaushik/train-schedule .'
             }
         }
         stage('Push Docker Image') {
